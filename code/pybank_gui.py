@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import ttk
+from pybank_db import Database
 
 """------------------------------- W I N D O W -----------------------------"""
 
@@ -20,18 +21,25 @@ window.columnconfigure(0,weight=1)
 window.columnconfigure(1,weight=1)
 window.columnconfigure(2,weight=1)
 window.columnconfigure(3,weight=1)
+
+
 """------------------------------- F O N T S -----------------------------"""
 
+
 #arial = tkinter.font.Font(family="Arial",size=18,weight="normal")
+
 
 """------------------------------- W I D G E T S -----------------------------"""
 
 
 """----- F R A M E S -------------------"""
 
+
 frame_background = tk.Frame(master=window,background="black")
 
+
 """----- L A B E L S -------------------"""
+
 
 label_hello = tk.Label(
     master=window,
@@ -65,7 +73,9 @@ label_gains = tk.Label(
     #font=arial
     )
 
+
 """----- E N T R I E S -------------------"""
+
 
 entry_date = tk.Entry(
     master=window,
@@ -86,7 +96,9 @@ entry_gains = tk.Entry(
     #font=arial
     )
 
+
 """----- B U T T O N S -------------------"""
+
 
 button_insert = tk.Button(
     master=window,
@@ -111,7 +123,9 @@ button_delete = tk.Button(
     foreground="red"
 )
 
+
 """----- T R E E V I E W -------------------"""
+
 
 tree = ttk.Treeview(master=window,columns=("Operation","Losses","Gains"))
 vertical_scrollbar = ttk.Scrollbar(master=window,orient=tk.VERTICAL,command=tree.yview)
@@ -132,9 +146,8 @@ tree.insert(transaction,tk.END,text="15/05",values=("Amazon",-18.83,0))
 tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))
 
 
-
-
 """------------------------------- P A C K A G I N G -----------------------------"""
+
 
 label_hello.grid(row=0,column=0,sticky=tk.NW)
 
@@ -156,6 +169,8 @@ entry_gains.grid(row=2,column=3,sticky=tk.W)
 tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 #vertical_scrollbar.grid(row=4,column=1)
 
+
 """------------------------------- M A I N L O O P -----------------------------"""
+
 
 window.mainloop()
