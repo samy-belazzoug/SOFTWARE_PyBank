@@ -9,7 +9,7 @@ import pybank_db
 
 window = tk.Tk()
 window.title("PyBank")
-window.geometry("1430x860")
+window.geometry("600x600")
 
 window.rowconfigure(0,weight=1)
 window.rowconfigure(1,weight=1)
@@ -104,7 +104,7 @@ entry_category = tk.Entry(
 
 
 def insert_button():
-    pybank_db.create_transaction(entry_amount.get(),entry_description.get(),entry_date.get(),1,1)   
+    pybank_db.create_transaction(entry_amount.get(),entry_description.get(),entry_date.get(),1,1)
     print(pybank_db.read_all_transactions())
 def update_button():
     pass
@@ -190,5 +190,23 @@ tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 
 pybank_db.init_database()
 pybank_db.create_account("By default","Bank","Type","00/00/0000")
-pybank_db.create_category("By default","000000")
+
+pybank_db.create_category("Transport","000000")
+pybank_db.create_category("Alimentation","000000")
+pybank_db.create_category("Divertissement","000000")
+pybank_db.create_category("ArgentPoche","000000")
+pybank_db.create_category("CommandeLigne","000000")
+pybank_db.create_category("Restaurant","000000")
+pybank_db.create_category("Don","000000")
+pybank_db.create_category("Informatique","000000")
+pybank_db.create_category("Courses","000000")
+pybank_db.create_category("AutoEcole","000000")
+pybank_db.create_category("FranceTravail","000000")
+pybank_db.create_category("Sports","000000")
+pybank_db.create_category("JeuxVideos","000000")
+pybank_db.create_category("Vetements","000000")
+pybank_db.create_category("Banque","000000")
+pybank_db.create_category("Autre","000000")
+pybank_db.create_category("Ecole","000000")
+
 window.mainloop()
