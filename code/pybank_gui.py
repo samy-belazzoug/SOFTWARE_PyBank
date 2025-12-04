@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import ttk
-from pybank_db import Database
+import pybank_db
+
 
 """------------------------------- W I N D O W -----------------------------"""
 
@@ -29,6 +30,7 @@ window.columnconfigure(3,weight=1)
 #arial = tkinter.font.Font(family="Arial",size=18,weight="normal")
 
 
+
 """------------------------------- W I D G E T S -----------------------------"""
 
 
@@ -51,25 +53,25 @@ label_hello = tk.Label(
     height=5
     )
 
+label_amount = tk.Label(
+    master=window,
+    text="Amount",
+    #font=arial
+    )
+
+label_description = tk.Label(
+    master=window,text="Description",
+    #font=arial,
+    )
+
 label_date = tk.Label(
     master=window,text="Date",
     #font=arial,
     )
 
-label_operation = tk.Label(
-    master=window,text="Operation",
-    #font=arial,
-    )
-
-label_losses = tk.Label(
+label_category = tk.Label(
     master=window,
-    text="Losses",
-    #font=arial
-    )
-
-label_gains = tk.Label(
-    master=window,
-    text="Gains",
+    text="Category",
     #font=arial
     )
 
@@ -77,24 +79,39 @@ label_gains = tk.Label(
 """----- E N T R I E S -------------------"""
 
 
+entry_amount = tk.Entry(
+    master=window,
+    #font=arial
+    )
+
+entry_description = tk.Entry(
+    master=window,
+    #font=arial
+    )
+
 entry_date = tk.Entry(
     master=window,
     #font=arial
     )
 
-entry_operation = tk.Entry(
+entry_category = tk.Entry(
     master=window,
     #font=arial
     )
 
-entry_losses = tk.Entry(
-    master=window,
-    #font=arial
-    )
-entry_gains = tk.Entry(
-    master=window,
-    #font=arial
-    )
+
+"""------------------------------- F U N C T I O N S -----------------------------"""
+
+
+def insert_button():
+    pybank_db.create_transaction(entry_amount.get(),entry_description.get(),entry_date.get(),1,1)   
+    print(pybank_db.read_all_transactions())
+def update_button():
+    pass
+def delete_button():
+    pass
+def tree_read():
+    pass
 
 
 """----- B U T T O N S -------------------"""
@@ -104,9 +121,9 @@ button_insert = tk.Button(
     master=window,
     text="Insert",
     #font=arial,
-    foreground="green"
+    foreground="green",
+    command=insert_button
     )
-
 
 button_update = tk.Button(
     master=window,
@@ -114,7 +131,6 @@ button_update = tk.Button(
     #font=arial,
     foreground="blue"
 )
-
 
 button_delete = tk.Button(
     master=window,
@@ -134,8 +150,8 @@ tree.configure(yscrollcommand=vertical_scrollbar.set)
 #Columns names
 tree.heading("#0",text="Date")
 tree.heading("Operation",text="Operation")
-tree.heading("Losses",text="Losses")
-tree.heading("Gains",text="Gains")
+tree.heading("Losses",text="Amount")
+tree.heading("Gains",text="Category")
 
 #Parents
 transaction = tree.insert("",tk.END,text="05 / 2023") 
@@ -151,20 +167,20 @@ tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))
 
 label_hello.grid(row=0,column=0,sticky=tk.NW)
 
-label_operation.grid(row=1,column=0,sticky=tk.W)
-entry_operation.grid(row=2,column=0,sticky=tk.W)
+label_amount.grid(row=1,column=0,sticky=tk.W)
+entry_amount.grid(row=2,column=0,sticky=tk.W)
 button_insert.grid(row=3,column=0,sticky=tk.W)
 
-label_date.grid(row=1,column=1,sticky=tk.W)
-entry_date.grid(row=2,column=1,sticky=tk.W)
+label_description.grid(row=1,column=1,sticky=tk.W)
+entry_description.grid(row=2,column=1,sticky=tk.W)
 button_update.grid(row=3,column=1,sticky=tk.W)
 
-label_losses.grid(row=1,column=2,sticky=tk.W)
-entry_losses.grid(row=2,column=2,sticky=tk.W)
+label_date.grid(row=1,column=2,sticky=tk.W)
+entry_date.grid(row=2,column=2,sticky=tk.W)
 button_delete.grid(row=3,column=2,sticky=tk.W)
 
-label_gains.grid(row=1,column=3,sticky=tk.W)
-entry_gains.grid(row=2,column=3,sticky=tk.W)
+label_category.grid(row=1,column=3,sticky=tk.W)
+entry_category.grid(row=2,column=3,sticky=tk.W)
 
 tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 #vertical_scrollbar.grid(row=4,column=1)
@@ -172,5 +188,7 @@ tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 
 """------------------------------- M A I N L O O P -----------------------------"""
 
-
+pybank_db.init_database()
+pybank_db.create_account("By default","Bank","Type","00/00/0000")
+pybank_db.create_category("By default","000000")
 window.mainloop()
