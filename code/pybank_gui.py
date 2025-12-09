@@ -24,11 +24,30 @@ window.columnconfigure(2,weight=1)
 window.columnconfigure(3,weight=1)
 
 
+"""------------------------------- D A T A B A S E -----------------------------"""
+
+
+pybank_db.init_database()
+pybank_db.create_default_category()
+
+
+"""----- T R A N S A C T I ON S -------------------"""
+
+
+"""----- C A T E G O R I E S -------------------"""
+
+
+categories = pybank_db.read_all_categories()
+categories_list = []
+for i in range(len(categories)):
+    categories_list.append(categories[i][1])
+print(categories_list)
+
+
 """------------------------------- F O N T S -----------------------------"""
 
 
 #arial = tkinter.font.Font(family="Arial",size=18,weight="normal")
-
 
 
 """------------------------------- W I D G E T S -----------------------------"""
@@ -59,8 +78,8 @@ label_amount = tk.Label(
     #font=arial
     )
 
-label_description = tk.Label(
-    master=window,text="Description",
+label_operation = tk.Label(
+    master=window,text="Operation",
     #font=arial,
     )
 
@@ -84,7 +103,7 @@ entry_amount = tk.Entry(
     #font=arial
     )
 
-entry_description = tk.Entry(
+entry_operation = tk.Entry(
     master=window,
     #font=arial
     )
@@ -100,18 +119,66 @@ entry_category = tk.Entry(
     )
 
 
+"""------------------------------- C O M B O B O X -----------------------------"""
+
+combo_category = ttk.Combobox(
+    master=window,
+    values=categories_list
+    )
+combo_category.set("Category")
+
+
+"""----- T R E E V I E W -------------------"""
+
+
+tree = ttk.Treeview(master=window,columns=("Date","Operation","Losses","Gains"))
+vertical_scrollbar = ttk.Scrollbar(master=window,orient=tk.VERTICAL,command=tree.yview)
+tree.configure(yscrollcommand=vertical_scrollbar.set)
+
+#Columns names
+tree.heading("#0",text="id")
+tree.heading("Date",text="Date")
+tree.heading("Operation",text="Operation")
+tree.heading("Losses",text="Amount")
+tree.heading("Gains",text="Category")
+
+#Parents
+'''transaction = tree.insert("",tk.END,text="05 / 2023") 
+
+#Sons
+tree.insert(transaction,tk.END,text="03/05",values=("Auchan",-4.84,0))
+tree.insert(transaction,tk.END,text="15/05",values=("Amazon",-18.83,0))
+tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))'''
+
+
 """------------------------------- F U N C T I O N S -----------------------------"""
 
+def tree_read():
+    """Display all the transactions"""
+    transactions = pybank_db.read_all_transactions()
+    transactions_id_list = []
+    transactions_date_list = []
+    transactions_operation_list = []
+    transactions_amount_list = []
+    transactions_category_list = []
+    for i in range(len(transactions)):
+        transactions_id_list.append(transactions[i][0])
+        transactions_amount_list.append(transactions[i][1])
+        transactions_operation_list.append(transactions[i][2])
+        transactions_date_list.append(transactions[i][3])    
+        transactions_category_list.append(categories[transactions[i][5]])
+        tree.insert("", index='end', values=(transactions_date_list[i] , transactions_operation_list[i] , (transactions_amount_list[i])/100 , transactions_category_list[i][1]))
 
 def insert_button():
-    pybank_db.create_transaction(entry_amount.get(),entry_description.get(),entry_date.get(),1,1)
+    pybank_db.create_transaction(entry_amount.get(),entry_operation.get(),entry_date.get(),1,combo_category.current())
     print(pybank_db.read_all_transactions())
+    print(combo_category.current())
+    tree_read()
 def update_button():
-    pass
+    tree_read()
 def delete_button():
-    pass
-def tree_read():
-    pass
+    tree_read()
+
 
 
 """----- B U T T O N S -------------------"""
@@ -140,73 +207,30 @@ button_delete = tk.Button(
 )
 
 
-"""----- T R E E V I E W -------------------"""
-
-
-tree = ttk.Treeview(master=window,columns=("Operation","Losses","Gains"))
-vertical_scrollbar = ttk.Scrollbar(master=window,orient=tk.VERTICAL,command=tree.yview)
-tree.configure(yscrollcommand=vertical_scrollbar.set)
-
-#Columns names
-tree.heading("#0",text="Date")
-tree.heading("Operation",text="Operation")
-tree.heading("Losses",text="Amount")
-tree.heading("Gains",text="Category")
-
-#Parents
-transaction = tree.insert("",tk.END,text="05 / 2023") 
-
-#Sons
-tree.insert(transaction,tk.END,text="03/05",values=("Auchan",-4.84,0))
-tree.insert(transaction,tk.END,text="15/05",values=("Amazon",-18.83,0))
-tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))
-
-
 """------------------------------- P A C K A G I N G -----------------------------"""
 
 
 label_hello.grid(row=0,column=0,sticky=tk.NW)
 
-label_amount.grid(row=1,column=0,sticky=tk.W)
-entry_amount.grid(row=2,column=0,sticky=tk.W)
+label_date.grid(row=1,column=0,sticky=tk.W)
+entry_date.grid(row=2,column=0,sticky=tk.W)
 button_insert.grid(row=3,column=0,sticky=tk.W)
 
-label_description.grid(row=1,column=1,sticky=tk.W)
-entry_description.grid(row=2,column=1,sticky=tk.W)
+label_operation.grid(row=1,column=1,sticky=tk.W)
+entry_operation.grid(row=2,column=1,sticky=tk.W)
 button_update.grid(row=3,column=1,sticky=tk.W)
 
-label_date.grid(row=1,column=2,sticky=tk.W)
-entry_date.grid(row=2,column=2,sticky=tk.W)
+label_amount.grid(row=1,column=2,sticky=tk.W)
+entry_amount.grid(row=2,column=2,sticky=tk.W)
 button_delete.grid(row=3,column=2,sticky=tk.W)
 
 label_category.grid(row=1,column=3,sticky=tk.W)
-entry_category.grid(row=2,column=3,sticky=tk.W)
+combo_category.grid(row=2,column=3,sticky=tk.W)
 
 tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 #vertical_scrollbar.grid(row=4,column=1)
 
 
 """------------------------------- M A I N L O O P -----------------------------"""
-
-pybank_db.init_database()
-pybank_db.create_account("By default","Bank","Type","00/00/0000")
-
-pybank_db.create_category("Transport","000000")
-pybank_db.create_category("Alimentation","000000")
-pybank_db.create_category("Divertissement","000000")
-pybank_db.create_category("ArgentPoche","000000")
-pybank_db.create_category("CommandeLigne","000000")
-pybank_db.create_category("Restaurant","000000")
-pybank_db.create_category("Don","000000")
-pybank_db.create_category("Informatique","000000")
-pybank_db.create_category("Courses","000000")
-pybank_db.create_category("AutoEcole","000000")
-pybank_db.create_category("FranceTravail","000000")
-pybank_db.create_category("Sports","000000")
-pybank_db.create_category("JeuxVideos","000000")
-pybank_db.create_category("Vetements","000000")
-pybank_db.create_category("Banque","000000")
-pybank_db.create_category("Autre","000000")
-pybank_db.create_category("Ecole","000000")
-
+tree_read()
 window.mainloop()

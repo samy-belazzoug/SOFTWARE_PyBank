@@ -110,7 +110,7 @@ def delete_account(account_id, db_path="pybank.db"):
 
 # ==================== CATEGORIES CRUD ====================
 
-def create_category(name, color, db_path="pybank.db"):
+def create_category(name, color, db_path="pybank.db")->str:
     """Create a new category"""
     try:
         with sqlite3.connect(db_path) as connexion:
@@ -287,6 +287,27 @@ def delete_transaction(transaction_id, db_path="pybank.db"):
         print(f"Error deleting transaction: {error}")
         return False
     
+def create_default_category():    
+    create_account("By default","Bank","Type","00/00/0000")
+    create_category("Transport","000000")
+    create_category("Alimentation","000000")
+    create_category("Divertissement","000000")
+    create_category("ArgentPoche","000000")
+    create_category("CommandeLigne","000000")
+    create_category("Restaurant","000000")
+    create_category("Don","000000")
+    create_category("Informatique","000000")
+    create_category("Courses","000000")
+    create_category("AutoEcole","000000")
+    create_category("FranceTravail","000000")
+    create_category("Sports","000000")
+    create_category("JeuxVideos","000000")
+    create_category("Vetements","000000")
+    create_category("Banque","000000")
+    create_category("Autre","000000")
+    create_category("Ecole","000000")
+
+
 if __name__ == "__main__":
     init_database()
     account_id = create_account("Courant quelqu'un","HSBC","Courant","03/11/2020")
