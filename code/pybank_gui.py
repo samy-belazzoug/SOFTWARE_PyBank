@@ -9,7 +9,7 @@ import pybank_db
 
 window = tk.Tk()
 window.title("PyBank")
-window.geometry("600x600")
+window.geometry("1080x720")
 
 window.rowconfigure(0,weight=1)
 window.rowconfigure(1,weight=1)
@@ -155,6 +155,9 @@ tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))'''
 
 def tree_read():
     """Display all the transactions"""
+    for i in tree.get_children():
+        tree.delete(i)
+    
     transactions = pybank_db.read_all_transactions()
     transactions_id_list = []
     transactions_date_list = []
@@ -167,7 +170,8 @@ def tree_read():
         transactions_operation_list.append(transactions[i][2])
         transactions_date_list.append(transactions[i][3])    
         transactions_category_list.append(categories[transactions[i][5]])
-        tree.insert("", index='end', values=(transactions_date_list[i] , transactions_operation_list[i] , (transactions_amount_list[i])/100 , transactions_category_list[i][1]))
+        tree.insert("",index='end',text=transactions_id_list[i], values=(transactions_date_list[i] , transactions_operation_list[i] , transactions_amount_list[i] , transactions_category_list[i][1]))
+    transactions.clear()
 
 def insert_button():
     pybank_db.create_transaction(entry_amount.get(),entry_operation.get(),entry_date.get(),1,combo_category.current())
