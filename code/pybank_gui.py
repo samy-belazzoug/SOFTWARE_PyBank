@@ -9,7 +9,7 @@ import pybank_db
 
 window = tk.Tk()
 window.title("PyBank")
-window.geometry("1080x720")
+window.geometry("1420x860")
 
 window.rowconfigure(0,weight=1)
 window.rowconfigure(1,weight=1)
@@ -17,11 +17,11 @@ window.rowconfigure(2,weight=1)
 window.rowconfigure(3,weight=1)
 window.rowconfigure(4,weight=1)
 
-
 window.columnconfigure(0,weight=1)
 window.columnconfigure(1,weight=1)
 window.columnconfigure(2,weight=1)
 window.columnconfigure(3,weight=1)
+window.columnconfigure(4,weight=1)
 
 
 """------------------------------- D A T A B A S E -----------------------------"""
@@ -72,6 +72,12 @@ label_hello = tk.Label(
     height=5
     )
 
+label_id = tk.Label(
+    master=window,
+    text="ID",
+    #font=arial
+    )
+
 label_amount = tk.Label(
     master=window,
     text="Amount",
@@ -97,6 +103,10 @@ label_category = tk.Label(
 
 """----- E N T R I E S -------------------"""
 
+entry_id = tk.Entry(
+    master=window,
+    #font=arial
+    )
 
 entry_amount = tk.Entry(
     master=window,
@@ -142,14 +152,6 @@ tree.heading("Operation",text="Operation")
 tree.heading("Losses",text="Amount")
 tree.heading("Gains",text="Category")
 
-#Parents
-'''transaction = tree.insert("",tk.END,text="05 / 2023") 
-
-#Sons
-tree.insert(transaction,tk.END,text="03/05",values=("Auchan",-4.84,0))
-tree.insert(transaction,tk.END,text="15/05",values=("Amazon",-18.83,0))
-tree.insert(transaction,tk.END,text="15/05",values=("Virement",0,+150))'''
-
 
 """------------------------------- F U N C T I O N S -----------------------------"""
 
@@ -179,8 +181,14 @@ def insert_button():
     print(combo_category.current())
     tree_read()
 def update_button():
+    pybank_db.update_transaction(entry_id.get(),entry_amount.get(),entry_operation.get(),entry_date.get(),1,combo_category.current())
+    print(pybank_db.read_all_transactions())
+    print(combo_category.current())
     tree_read()
 def delete_button():
+    pybank_db.delete_transaction(entry_id.get())
+    print(pybank_db.read_all_transactions())
+    print(combo_category.current())
     tree_read()
 
 
@@ -200,14 +208,16 @@ button_update = tk.Button(
     master=window,
     text="Update",
     #font=arial,
-    foreground="blue"
+    foreground="blue",
+    command=update_button
 )
 
 button_delete = tk.Button(
     master=window,
     text="Delete",
     #font=arial,
-    foreground="red"
+    foreground="red",
+    command=delete_button
 )
 
 
@@ -216,20 +226,25 @@ button_delete = tk.Button(
 
 label_hello.grid(row=0,column=0,sticky=tk.NW)
 
-label_date.grid(row=1,column=0,sticky=tk.W)
-entry_date.grid(row=2,column=0,sticky=tk.W)
+label_id.grid(row=1,column=0,sticky=tk.W)
+entry_id.grid(row=2,column=0,sticky=tk.W)
+
+label_date.grid(row=1,column=1,sticky=tk.W)
+entry_date.grid(row=2,column=1,sticky=tk.W)
+
+label_operation.grid(row=1,column=2,sticky=tk.W)
+entry_operation.grid(row=2,column=2,sticky=tk.W)
+
+label_amount.grid(row=1,column=3,sticky=tk.W)
+entry_amount.grid(row=2,column=3,sticky=tk.W)
+
+label_category.grid(row=1,column=4,sticky=tk.W)
+combo_category.grid(row=2,column=4,sticky=tk.W)
+
+
 button_insert.grid(row=3,column=0,sticky=tk.W)
-
-label_operation.grid(row=1,column=1,sticky=tk.W)
-entry_operation.grid(row=2,column=1,sticky=tk.W)
 button_update.grid(row=3,column=1,sticky=tk.W)
-
-label_amount.grid(row=1,column=2,sticky=tk.W)
-entry_amount.grid(row=2,column=2,sticky=tk.W)
 button_delete.grid(row=3,column=2,sticky=tk.W)
-
-label_category.grid(row=1,column=3,sticky=tk.W)
-combo_category.grid(row=2,column=3,sticky=tk.W)
 
 tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 #vertical_scrollbar.grid(row=4,column=1)
