@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 def init_database(db_path="pybank.db"):
     """Initialize the database with tables from SQL script"""
@@ -288,24 +289,36 @@ def delete_transaction(transaction_id, db_path="pybank.db"):
         return False
     
 def create_default_category():    
-    create_account("By default","Bank","Type","00/00/0000")
-    create_category("Transport","000000")
-    create_category("Alimentation","000000")
-    create_category("Divertissement","000000")
-    create_category("ArgentPoche","000000")
-    create_category("CommandeLigne","000000")
-    create_category("Restaurant","000000")
-    create_category("Don","000000")
-    create_category("Informatique","000000")
-    create_category("Courses","000000")
-    create_category("AutoEcole","000000")
-    create_category("FranceTravail","000000")
-    create_category("Sports","000000")
-    create_category("JeuxVideos","000000")
-    create_category("Vetements","000000")
-    create_category("Banque","000000")
-    create_category("Autre","000000")
-    create_category("Ecole","000000")
+    with open('settings.json', 'r') as file:
+        settings = json.load(file)
+    if settings['category_created'] == 0:
+        create_account("By default","Bank","Type","00/00/0000")
+        create_category("Transport","000000")
+        create_category("Alimentation","000000")
+        create_category("Divertissement","000000")
+        create_category("ArgentPoche","000000")
+        create_category("CommandeLigne","000000")
+        create_category("Restaurant","000000")
+        create_category("Don","000000")
+        create_category("Informatique","000000")
+        create_category("Courses","000000")
+        create_category("AutoEcole","000000")
+        create_category("FranceTravail","000000")
+        create_category("Sports","000000")
+        create_category("JeuxVideos","000000")
+        create_category("Vetements","000000")
+        create_category("Banque","000000")
+        create_category("Autre","000000")
+        create_category("Ecole","000000")
+        
+        #Set category_created to 1 in json
+        settings['category_created'] = 1
+        
+        #Save JSON data
+        with open('settings.json', 'w') as file:
+            json.dump(settings, file, indent=4)
+    else:
+        print("Categories already created.")
 
 
 if __name__ == "__main__":
