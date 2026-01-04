@@ -293,6 +293,7 @@ def create_default_category():
         settings = json.load(file)
     if settings['category_created'] == 0:
         create_account("By default","Bank","Type","00/00/0000")
+        create_category(" ","000000")
         create_category("Transport","000000")
         create_category("Alimentation","000000")
         create_category("Divertissement","000000")
@@ -319,6 +320,7 @@ def create_default_category():
             json.dump(settings, file, indent=4)
     else:
         print("Categories already created.")
+        read_all_categories()
 
 
 if __name__ == "__main__":
