@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import ttk
-import pybank_db
+import pybank_db as pybank_db
 
 
 """------------------------------- W I N D O W -----------------------------"""
