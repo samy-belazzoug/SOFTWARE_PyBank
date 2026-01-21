@@ -1,12 +1,14 @@
 # SOFTWARE_PyBank
 
 ## Why am I doing it?
-In my second degree, I got very low money compared to my first degree, I will not detail here, but I come from 500€/month to 0.
-So, I knew I could save better money for my second year, and to optimise my spendings, I've deecided to develop a budget management
-Software tool custom-made, so I know my errors and I spend more wisely.
+This was a project we had to so in school during my first degree.
+But I've decided to go back again and do it properly.
+This is the first software I entirely develop, from back-end to front-end.
 
-Of course, as I am a student and I want to be hired for the future, i'll try to develop this solution with the needs of the industry 
-so I get more chances to get hired.
+It will also be a little laboratory for me to discover Python technologies.
+I've discovered PyQT6, now Tkinter, and I am planning to go with Flask (or FastAPI) and Vue.js.
+
+Moreover, this tool will be pretty useful for me, i'll finally have a proper tool for managing my money :)
 
 ## Tech stack
 
