@@ -21,6 +21,7 @@ def init_database(db_path="pybank.db"):
 
 # ==================== ACCOUNTS CRUD ====================
 
+
 def create_account(name, bank, account_type, date, db_path="pybank.db"):
     """Create a new account"""
     try:
@@ -110,6 +111,7 @@ def delete_account(account_id, db_path="pybank.db"):
 
 
 # ==================== CATEGORIES CRUD ====================
+
 
 def create_category(name, color, db_path="pybank.db")->str:
     """Create a new category"""
@@ -201,6 +203,7 @@ def delete_category(category_id, db_path="pybank.db"):
 
 # ==================== TRANSACTIONS CRUD ====================
 
+
 def create_transaction(amount, description, date, account_id, category_id, db_path="pybank.db"):
     """Create a new transaction"""
     try:
@@ -288,6 +291,7 @@ def delete_transaction(transaction_id, db_path="pybank.db"):
         print(f"Error deleting transaction: {error}")
         return False
     
+
 def create_default_category():    
     with open('settings.json', 'r') as file:
         settings = json.load(file)

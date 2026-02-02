@@ -1,7 +1,9 @@
+import sys
+sys.path.append("..")
 import tkinter as tk
 from tkinter import font
 from tkinter import ttk
-import pybank_db as pybank_db
+import pybank_db
 
 
 """------------------------------- W I N D O W -----------------------------"""
@@ -252,5 +254,6 @@ tree.grid(row=4,column=0,sticky=tk.W,columnspan=3)
 
 
 """------------------------------- M A I N L O O P -----------------------------"""
-tree_read()
-window.mainloop()
+def run():
+    tree_read()
+    window.mainloop()
